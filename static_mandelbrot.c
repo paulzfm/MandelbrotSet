@@ -117,14 +117,14 @@ int main(void)
 
 	/* create threads to draw pixels */
 	pthread_t threads[width / 20];
+	Args a[width / 20];
 	int i;
-	for (i = 0; i < width; i += 20) {
-		Args a;
-		a.start = i;
-		a.end = i + 20;
-		pthread_create(&threads[i], NULL, DrawColumns, (void*)(&a));
+	for (i = 0; i < width / 20; i++) {
+		a[i].start = i * 20;
+		a[i].end = (i + 1) * 20;
+		pthread_create(&threads[i], NULL, DrawColumns, (void*)(&a[i]));
 
-		printf("Create %d\n", i);
+		printf("Create thread #%d\n", i);
 	}
 
 	/* join all threads */
