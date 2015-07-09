@@ -23,7 +23,7 @@ pthread_mutex_t mutex;
 pthread_mutex_t task_mutex;
 
 /* task queue */
-typedef struct queueType
+struct Queue
 {
 	int count;
 
@@ -39,7 +39,7 @@ typedef struct queueType
 		*j = count % height;
 		++count;
 	}
-} Queue;
+};
 
 Queue queue;
 
