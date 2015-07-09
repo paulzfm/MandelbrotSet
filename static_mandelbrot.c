@@ -129,7 +129,7 @@ int main(void)
 	for (i = 0; i < width / 20; i++) {
 		pthread_join(threads[i], NULL);
 	}
-	printf("All done.\n", );
+	printf("All done.\n");
 	sleep(2);
 
 	return 0;
