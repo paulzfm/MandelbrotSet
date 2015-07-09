@@ -10,6 +10,7 @@ GC gc;
 /* window size */
 const int width = 400;
 const int height = 400;
+const int N = 20; // num of threads
 
 /* complex */
 typedef struct complexType
@@ -116,17 +117,17 @@ int main(void)
 	pthread_mutex_init(&mutex, NULL);
 
 	/* create threads to draw pixels */
-	pthread_t threads[width / 20];
-	Args a[width / 20];
+	pthread_t threads[N];
+	Args a[N];
 	int i;
-	for (i = 0; i < width / 20; i++) {
-		a[i].start = i * 20;
-		a[i].end = (i + 1) * 20;
+	for (i = 0; i < N; i++) {
+		a[i].start = i * (width / N);
+		a[i].end = (i + 1) * (width / N);
 		pthread_create(&threads[i], NULL, DrawColumns, (void*)(&a[i]));
 	}
 
 	/* join all threads */
-	for (i = 0; i < width / 20; i++) {
+	for (i = 0; i < N; i++) {
 		pthread_join(threads[i], NULL);
 	}
 	printf("All done.\n");
