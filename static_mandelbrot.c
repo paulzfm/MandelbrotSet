@@ -61,6 +61,8 @@ void* DrawColumns(void* args)
 	Args* a = (Args*)args;
 	int i, j;
 
+	printf("Computing columns [%d, %d]\n", a->start, a->end);
+
 	for (i = a->start; i < a->end; i++) {
 		for (j = 0; j < height; j++) {
 			DrawPixel(i, j);
@@ -79,7 +81,7 @@ int main(void)
 	/* open connection with the server */
 	display = XOpenDisplay(NULL);
 	if (display == NULL) {
-		fprintf(stderr, "cannot open display\n");
+		fprintf(stderr, "Error: cannot open display.\n");
 		return 0;
 	}
 
