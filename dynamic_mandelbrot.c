@@ -23,25 +23,17 @@ pthread_mutex_t mutex;
 pthread_mutex_t task_mutex;
 
 /* task queue */
-struct Queue
+int count = 0;
+void GetTask(int *i, int *j)
 {
-	int count;
-
-	Queue() { count = 0; }
-
-	void GetTask(int *i, int *j)
-	{
-		if (count >= width * height) {
-			*i = *j = -1;
-			return;
-		}
-		*i = count / height;
-		*j = count % height;
-		++count;
+	if (count >= width * height) {
+		*i = *j = -1;
+		return;
 	}
-};
-
-Queue queue;
+	*i = count / height;
+	*j = count % height;
+	++count;
+}
 
 /* draw pixel at (i, j) */
 void DrawPixel(int i, int j)
@@ -80,7 +72,7 @@ void* Worker(void* args)
 	while (1) {
 		// get task
 		pthread_mutex_lock(&task_mutex);
-		queue.GetTask(&i, &j);
+		GetTask(&i, &j);
 		pthread_mutex_unlock(&task_mutex);
 
 		if (i == -1) { // no more task: exit
