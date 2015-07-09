@@ -39,7 +39,7 @@ typedef struct queueType
 		*j = count % height;
 		++count;
 	}
-	
+
 } Queue queue;
 
 /* draw pixel at (i, j) */
@@ -76,7 +76,7 @@ void* Worker(void* args)
 {
 	int i, j;
 
-	while (true) {
+	while (1) {
 		// get task
 		pthread_mutex_lock(&task_mutex);
 		queue.GetTask(&i, &j);
