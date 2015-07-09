@@ -40,7 +40,9 @@ typedef struct queueType
 		++count;
 	}
 
-} Queue queue;
+} Queue;
+
+Queue queue;
 
 /* draw pixel at (i, j) */
 void DrawPixel(int i, int j)
