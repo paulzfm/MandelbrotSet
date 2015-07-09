@@ -103,7 +103,7 @@ int main(void)
 	}
 
 	/* join all threads */
-	for (int i = 0; i < width; i++) {
+	for (i = 0; i < width; i++) {
 		pthread_join(threads[i], NULL);
 	}
 
