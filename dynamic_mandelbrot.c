@@ -29,7 +29,7 @@ typedef struct queueType
 
 	Queue() { count = 0; }
 
-	void GetTask(int* i, int* j)
+	void GetTask(int *i, int *j)
 	{
 		if (count >= width * height) {
 			*i = *j = -1;
@@ -39,7 +39,6 @@ typedef struct queueType
 		*j = count % height;
 		++count;
 	}
-
 } Queue;
 
 Queue queue;
