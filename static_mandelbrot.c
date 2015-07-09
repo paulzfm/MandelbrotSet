@@ -54,9 +54,9 @@ typedef struct argsType
 void* DrawColumns(void* args)
 {
 	Args* a = (Args*)args;
+	int i, j;
 
-	int i;
-	for (i = a->start; i < end; i++) {
+	for (i = a->start; i < a->end; i++) {
 		for (j = 0; j < height; j++) {
 			DrawPixel(i, j);
 		}
