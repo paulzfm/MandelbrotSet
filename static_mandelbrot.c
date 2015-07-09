@@ -44,15 +44,22 @@ void DrawPixel(int i, int j)
 	XDrawPoint(display, window, gc, i, j);
 }
 
-/* draw pixels of one column */
-/* @args column:int */
-void* DrawOneColumn(void* args)
+/* draw pixels of a few column */
+typedef struct argsType
 {
-	int i = *((int*)args);
-	int j;
+	int start;
+	int end;
+} Args;
 
-	for (j = 0; j < height; j++) {
-		DrawPixel(i, j);
+void* DrawColumns(void* args)
+{
+	Args* a = (Args*)args;
+
+	int i;
+	for (i = a->start; i < end; i++) {
+		for (j = 0; j < height; j++) {
+			DrawPixel(i, j);
+		}
 	}
 
 	XFlush(display);
@@ -98,8 +105,11 @@ int main(void)
 	/* create threads to draw pixels */
 	pthread_t threads[width];
 	int i;
-	for (i = 0; i < width; i++) {
-		pthread_create(&threads[i], NULL, DrawOneColumn, (void*)(&i));
+	for (i = 0; i < width; i += 20) {
+		Args a;
+		a.start = i;
+		a.end = i + 20;
+		pthread_create(&threads[i], NULL, DrawOneColumn, (void*)(&a));
 	}
 
 	/* join all threads */
