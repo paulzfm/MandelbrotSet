@@ -17,6 +17,9 @@ typedef struct complexType
 	double real, imag;
 } Compl;
 
+/* mutex */
+pthread_mutex_t mutex;
+
 /* draw pixel at (i, j) */
 void DrawPixel(int i, int j)
 {
@@ -40,8 +43,10 @@ void DrawPixel(int i, int j)
 		repeats++;
 	}
 
+	pthread_mutex_lock(&mutex);
 	XSetForeground(display, gc, 1024 * 1024 * (repeats % 256));
 	XDrawPoint(display, window, gc, i, j);
+	pthread_mutex_unlock(&mutex);
 }
 
 /* draw pixels of a few column */
@@ -62,7 +67,10 @@ void* DrawColumns(void* args)
 		}
 	}
 
+	pthread_mutex_lock(&mutex);
 	XFlush(display);
+	pthread_mutex_unlock(&mutex);
+
 	pthread_exit(NULL);
 }
 
@@ -101,6 +109,9 @@ int main(void)
 	/* map(show) the window */
 	XMapWindow(display, window);
 	XSync(display, 0);
+
+	/* initialize mutex */
+	pthread_mutex_init(&mutex, NULL);
 
 	/* create threads to draw pixels */
 	pthread_t threads[width];
