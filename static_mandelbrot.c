@@ -109,7 +109,7 @@ int main(void)
 		Args a;
 		a.start = i;
 		a.end = i + 20;
-		pthread_create(&threads[i], NULL, DrawOneColumn, (void*)(&a));
+		pthread_create(&threads[i], NULL, DrawColumns, (void*)(&a));
 	}
 
 	/* join all threads */
