@@ -61,7 +61,7 @@ void* DrawColumns(void* args)
 	Args* a = (Args*)args;
 	int i, j;
 
-	printf("Computing columns [%d, %d]\n", a->start, a->end);
+	printf("Computing columns [%d, %d)...\n", a->start, a->end);
 
 	for (i = a->start; i < a->end; i++) {
 		for (j = 0; j < height; j++) {
@@ -123,14 +123,14 @@ int main(void)
 		a[i].start = i * 20;
 		a[i].end = (i + 1) * 20;
 		pthread_create(&threads[i], NULL, DrawColumns, (void*)(&a[i]));
-
-		printf("Create thread #%d\n", i);
 	}
 
 	/* join all threads */
 	for (i = 0; i < width / 20; i++) {
 		pthread_join(threads[i], NULL);
 	}
+	printf("All done.\n", );
+	sleep(2);
 
 	return 0;
 }
