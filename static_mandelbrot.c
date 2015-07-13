@@ -104,7 +104,7 @@ int main(void)
 	/* create threads to draw pixels */
 	pthread_t threads[N];
 	Args a[N];
-	int i;
+	int i, j;
 	for (i = 0; i < N; i++) {
 		a[i].start = i * (width / N);
 		a[i].end = (i + 1) * (width / N);

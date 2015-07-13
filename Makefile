@@ -9,5 +9,8 @@ static: static_mandelbrot.c
 dynamic: dynamic_mandelbrot.c
 	gcc dynamic_mandelbrot.c -o dynamic -lX11 -lpthread
 
+mp: openmp_mandelbrot.c
+	gcc openmp_mandelbrot.c -o mp -lX11 -fopenmp
+
 clean:
-	rm -rf seq static
+	rm -rf seq static mp
