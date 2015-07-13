@@ -1,6 +1,7 @@
 #include <X11/Xlib.h>
 #include <pthread.h>
 #include <stdio.h>
+#include <time.h>
 
 /* window size */
 #define width 400
@@ -54,8 +55,6 @@ void* DrawColumns(void* args)
 	Args* a = (Args*)args;
 	int i, j;
 
-	printf("Computing columns [%d, %d)...\n", a->start, a->end);
-
 	for (i = a->start; i < a->end; i++) {
 		for (j = 0; j < height; j++) {
 			SetPixel(i, j);
@@ -100,6 +99,9 @@ int main(void)
 	XMapWindow(display, window);
 	XSync(display, 0);
 
+	clock_t start_t, end_t; // timing
+	start_t = clock();
+
 	/* create threads to draw pixels */
 	pthread_t threads[N];
 	Args a[N];
@@ -114,7 +116,10 @@ int main(void)
 	for (i = 0; i < N; i++) {
 		pthread_join(threads[i], NULL);
 	}
-	printf("All done.\n");
+
+	end_t = clock();
+	printf("Total time: %lfs\n", (double)(end_t - start_t) / CLOCKS_PER_SEC);
+	printf("Drawing...\n");
 
 	/* drawing */
 	for (i = 0; i < width; i++) {
@@ -124,6 +129,7 @@ int main(void)
 		}
 	}
 	XFlush(display);
+	sleep(2);
 
 	return 0;
 }
