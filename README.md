@@ -17,7 +17,7 @@ and the four programs `seq`, `static`, `dynamic` and `mp` are generated.
 
 ## Results
 
-For more accuracy, we only measure the time of computation and save data into buffer. Finally, we flush them all together. Note that we create 20 threads for static and dynamic version.
+For more accuracy, we only measure the time of computation and save data into buffer. Finally, we flush them all together. Note that we create 20 threads for all muitl-thread versions.
 
 Here is the result executing on our server:
 
