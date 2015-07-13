@@ -63,13 +63,15 @@ int main(void)
 	/* draw points */
 	int i, j;
 
+	printf("%d threads will be created.\n", omp_get_num_threads());
+
 	#pragma omp parallel for private(j)
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
 			Compl z, c;
 			int repeats;
 			double temp, lengthsq;
-			
+
 			z.real = 0.0;
 			z.imag = 0.0;
 			c.real = -2.0 + (double)i * (4.0 / (double)width);
