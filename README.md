@@ -12,10 +12,10 @@ Note that this project is ONLY available for Unix-like OS.
 
 ## Usage
 
-- `seq` Sequential version.
-- `static` Static muitl-thread version.
-- `dynamic` Dynamic muitl-thread version using task queue.
-- `mp` Openmp version.
+- `./seq` Sequential version.
+- `./static` Static muitl-thread version.
+- `./dynamic` Dynamic muitl-thread version using task queue.
+- `./mp` Openmp version.
 
 ## Results
 
