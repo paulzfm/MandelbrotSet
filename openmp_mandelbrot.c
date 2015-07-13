@@ -65,7 +65,9 @@ int main(void)
 	int repeats;
 	double temp, lengthsq;
 	int i, j;
-	#pragma omp parallel for
+
+
+	#pragma omp parallel for private(j)
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
 			z.real = 0.0;
@@ -84,7 +86,6 @@ int main(void)
 				repeats++;
 			}
 
-			#pragma omp critical
 			pixels[i][j] = 1024 * 1024 * (repeats % 256);
 		}
 	}
