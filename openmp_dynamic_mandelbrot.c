@@ -65,7 +65,7 @@ int main(void)
 	int i, j;
 
 	omp_set_num_threads(N);
-	#pragma omp parallel for schedule(auto) private(j)
+	#pragma omp parallel for schedule(dynamic) private(j)
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
 			Compl z, c;
