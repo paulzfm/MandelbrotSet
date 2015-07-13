@@ -23,4 +23,4 @@ Here is the result executing on our server:
 
 Version  | sequential | static | dynamic | openmp |
 -------  | ---------- | ------ | ------- | ------ |
-Time (s) | 13.920745  | 3.171405 | 1.155419 | 1.804827 |
+Time (s) | 13.920745  | 3.171405 | 1.155419 | 3.192544 |

@@ -65,7 +65,6 @@ int main(void)
 	int i, j;
 
 	omp_set_num_threads(N);
-	printf("%d threads will be created.\n", N);
 	#pragma omp parallel for private(j)
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
