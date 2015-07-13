@@ -120,8 +120,9 @@ int main(void)
 	/* initialize mutex */
 	pthread_mutex_init(&task_mutex, NULL);
 
-	clock_t start_t, end_t; // timing
-	start_t = clock();
+	struct timespec start, finish; // time
+	double elapsed;
+	clock_gettime(CLOCK_MONOTONIC, &start);
 
 	/* create threads to draw pixels */
 	pthread_t threads[N];
@@ -134,9 +135,11 @@ int main(void)
 	for (i = 0; i < N; i++) {
 		pthread_join(threads[i], NULL);
 	}
-	
-	end_t = clock();
-	printf("Total time: %lfs\n", (double)(end_t - start_t) / CLOCKS_PER_SEC);
+
+	clock_gettime(CLOCK_MONOTONIC, &finish);
+	elapsed = finish.tv_sec - start.tv_sec;
+	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+	printf("Total time: %lfs\n", elapsed);
 	printf("Drawing...\n");
 
 	/* drawing */

@@ -1,29 +1,34 @@
 #include <X11/Xlib.h>
 #include <stdio.h>
+#include <time.h>
 
+/* window size */
+#define width 400
+#define height 400
+
+/* complex */
 typedef struct complexType
 {
 	double real, imag;
 } Compl;
 
+/* pixel buffer */
+int pixels[width][height];
+
 int main(void)
 {
 	Display *display;
-	Window window;      //initialization for a window
-	int screen;         //which screen
+	Window window;      // initialization for a window
+	int screen;         // which screen
 
 	/* open connection with the server */
 	display = XOpenDisplay(NULL);
-	if(display == NULL) {
+	if (display == NULL) {
 		fprintf(stderr, "cannot open display\n");
 		return 0;
 	}
 
 	screen = DefaultScreen(display);
-
-	/* set window size */
-	int width = 400;
-	int height = 400;
 
 	/* set window position */
 	int x = 0;
@@ -42,7 +47,6 @@ int main(void)
 	long valuemask = 0;
 
 	gc = XCreateGC(display, window, valuemask, &values);
-	//XSetBackground (display, gc, WhitePixel (display, screen));
 	XSetForeground (display, gc, BlackPixel (display, screen));
 	XSetBackground(display, gc, 0X0000FF00);
 	XSetLineAttributes (display, gc, 1, LineSolid, CapRound, JoinRound);
@@ -51,33 +55,52 @@ int main(void)
 	XMapWindow(display, window);
 	XSync(display, 0);
 
+	struct timespec start, finish; // time
+	double elapsed;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+
 	/* draw points */
 	Compl z, c;
 	int repeats;
 	double temp, lengthsq;
 	int i, j;
-	for(i=0; i<width; i++) {
-		for(j=0; j<height; j++) {
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
 			z.real = 0.0;
 			z.imag = 0.0;
-			c.real = -2.0 + (double)i * (4.0/(double)width);
-			c.imag = -2.0 + (double)j * (4.0/(double)height);
+			c.real = -2.0 + (double)i * (4.0 / (double)width);
+			c.imag = -2.0 + (double)j * (4.0 / (double)height);
 			repeats = 0;
 			lengthsq = 0.0;
 
-			while(repeats < 100000 && lengthsq < 4.0) { /* Theorem : If c belongs to M, then |Zn| <= 2. So Zn^2 <= 4 */
-				temp = z.real*z.real - z.imag*z.imag + c.real;
-				z.imag = 2*z.real*z.imag + c.imag;
+			while (repeats < 100000 && lengthsq < 4.0) {
+				/* Theorem : If c belongs to M, then |Zn| <= 2. So Zn^2 <= 4 */
+				temp = z.real * z.real - z.imag * z.imag + c.real;
+				z.imag = 2 * z.real * z.imag + c.imag;
 				z.real = temp;
-				lengthsq = z.real*z.real + z.imag*z.imag;
+				lengthsq = z.real * z.real + z.imag * z.imag;
 				repeats++;
 			}
 
-			XSetForeground (display, gc,  1024 * 1024 * (repeats % 256));
-			XDrawPoint (display, window, gc, i, j);
+			pixels[i][j] = 1024 * 1024 * (repeats % 256);
+		}
+	}
+
+	clock_gettime(CLOCK_MONOTONIC, &finish);
+	elapsed = finish.tv_sec - start.tv_sec;
+	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+	printf("Total time: %lfs\n", elapsed);
+	printf("Drawing...\n");
+
+	/* drawing */
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
+			XSetForeground(display, gc, pixels[i][j]);
+			XDrawPoint(display, window, gc, i, j);
 		}
 	}
 	XFlush(display);
 	sleep(2);
+
 	return 0;
 }
