@@ -99,9 +99,8 @@ int main(void)
 	XMapWindow(display, window);
 	XSync(display, 0);
 
-	struct timespec start, finish; // time
-	double elapsed;
-	clock_gettime(CLOCK_MONOTONIC, &start);
+	clock_t start_t, end_t; // timing
+	start_t = clock();
 
 	/* create threads to draw pixels */
 	pthread_t threads[N];
@@ -118,10 +117,8 @@ int main(void)
 		pthread_join(threads[i], NULL);
 	}
 
-	clock_gettime(CLOCK_MONOTONIC, &finish);
-	elapsed = finish.tv_sec - start.tv_sec;
-	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
-	printf("Total time: %lfs\n", elapsed);
+	end_t = clock();
+	printf("Total time: %lfs\n", (double)(end_t - start_t) / CLOCKS_PER_SEC);
 	printf("Drawing...\n");
 
 	/* drawing */

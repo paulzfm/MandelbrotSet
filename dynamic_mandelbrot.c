@@ -134,6 +134,7 @@ int main(void)
 	for (i = 0; i < N; i++) {
 		pthread_join(threads[i], NULL);
 	}
+	
 	end_t = clock();
 	printf("Total time: %lfs\n", (double)(end_t - start_t) / CLOCKS_PER_SEC);
 	printf("Drawing...\n");
