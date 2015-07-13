@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 /* window size */
-const int width = 400;
-const int height = 400;
-const int N = 20; // num of threads
+#define width 400
+#define height 400
+#define N 20 // num of threads
 
 /* complex */
 typedef struct complexType
