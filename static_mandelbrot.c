@@ -2,11 +2,6 @@
 #include <pthread.h>
 #include <stdio.h>
 
-/* X Window */
-Display *display;
-Window window;
-GC gc;
-
 /* window size */
 const int width = 400;
 const int height = 400;
@@ -18,11 +13,11 @@ typedef struct complexType
 	double real, imag;
 } Compl;
 
-/* mutex */
-pthread_mutex_t mutex;
+/* pixel buffer */
+int pixels[width][height];
 
 /* draw pixel at (i, j) */
-void DrawPixel(int i, int j)
+void SetPixel(int i, int j)
 {
 	Compl z, c;
 	int repeats;
@@ -44,10 +39,7 @@ void DrawPixel(int i, int j)
 		repeats++;
 	}
 
-	pthread_mutex_lock(&mutex);
-	XSetForeground(display, gc, 1024 * 1024 * (repeats % 256));
-	XDrawPoint(display, window, gc, i, j);
-	pthread_mutex_unlock(&mutex);
+	pixels[i][j] = 1024 * 1024 * (repeats % 256);
 }
 
 /* draw pixels of a few column */
@@ -66,13 +58,9 @@ void* DrawColumns(void* args)
 
 	for (i = a->start; i < a->end; i++) {
 		for (j = 0; j < height; j++) {
-			DrawPixel(i, j);
+			SetPixel(i, j);
 		}
 	}
-
-	pthread_mutex_lock(&mutex);
-	XFlush(display);
-	pthread_mutex_unlock(&mutex);
 
 	pthread_exit(NULL);
 }
@@ -80,7 +68,7 @@ void* DrawColumns(void* args)
 int main(void)
 {
 	/* open connection with the server */
-	display = XOpenDisplay(NULL);
+	Display *display = XOpenDisplay(NULL);
 	if (display == NULL) {
 		fprintf(stderr, "Error: cannot open display.\n");
 		return 0;
@@ -96,14 +84,14 @@ int main(void)
 	int border_width = 0;
 
 	/* create window */
-	window = XCreateSimpleWindow(display, RootWindow(display, screen), x, y, width, height, border_width,
+	int window = XCreateSimpleWindow(display, RootWindow(display, screen), x, y, width, height, border_width,
 					BlackPixel(display, screen), WhitePixel(display, screen));
 
 	/* create graph */
 	XGCValues values;
 	long valuemask = 0;
 
-	gc = XCreateGC(display, window, valuemask, &values);
+	GC gc = XCreateGC(display, window, valuemask, &values);
 	//XSetBackground (display, gc, WhitePixel (display, screen));
 	XSetForeground(display, gc, BlackPixel(display, screen));
 	XSetBackground(display, gc, 0X0000FF00);
@@ -112,9 +100,6 @@ int main(void)
 	/* map(show) the window */
 	XMapWindow(display, window);
 	XSync(display, 0);
-
-	/* initialize mutex */
-	pthread_mutex_init(&mutex, NULL);
 
 	/* create threads to draw pixels */
 	pthread_t threads[N];
@@ -131,7 +116,15 @@ int main(void)
 		pthread_join(threads[i], NULL);
 	}
 	printf("All done.\n");
-	sleep(2);
+
+	/* drawing */
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
+			XSetForeground(display, gc, pixels[i][j]);
+			XDrawPoint(display, window, gc, i, j);
+		}
+	}
+	XFlush(display);
 
 	return 0;
 }
