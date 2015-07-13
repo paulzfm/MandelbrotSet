@@ -62,15 +62,16 @@ int main(void)
 	clock_gettime(CLOCK_MONOTONIC, &start);
 
 	/* draw points */
-	int i, j;
+	int i, j, k;
 
-	// omp_set_num_threads(N);
-	#pragma omp parallel for schedule(dynamic) private(j)
-	for (i = 0; i < width; i++) {
-		for (j = 0; j < height; j++) {
+	omp_set_num_threads(N);
+	#pragma omp parallel for schedule(dynamic)
+	for (k = 0; k < width * height; k++) {
 			Compl z, c;
 			int repeats;
 			double temp, lengthsq;
+			i = k / height;
+			j = k % height;
 
 			z.real = 0.0;
 			z.imag = 0.0;
