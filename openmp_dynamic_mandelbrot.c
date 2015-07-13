@@ -67,30 +67,29 @@ int main(void)
 	// omp_set_num_threads(N);
 	#pragma omp parallel for schedule(dynamic)
 	for (k = 0; k < width * height; k++) {
-			Compl z, c;
-			int repeats;
-			double temp, lengthsq;
-			i = k / height;
-			j = k % height;
+		Compl z, c;
+		int repeats;
+		double temp, lengthsq;
+		i = k / height;
+		j = k % height;
 
-			z.real = 0.0;
-			z.imag = 0.0;
-			c.real = -2.0 + (double)i * (4.0 / (double)width);
-			c.imag = -2.0 + (double)j * (4.0 / (double)height);
-			repeats = 0;
-			lengthsq = 0.0;
+		z.real = 0.0;
+		z.imag = 0.0;
+		c.real = -2.0 + (double)i * (4.0 / (double)width);
+		c.imag = -2.0 + (double)j * (4.0 / (double)height);
+		repeats = 0;
+		lengthsq = 0.0;
 
-			while (repeats < 100000 && lengthsq < 4.0) {
-				/* Theorem : If c belongs to M, then |Zn| <= 2. So Zn^2 <= 4 */
-				temp = z.real * z.real - z.imag * z.imag + c.real;
-				z.imag = 2 * z.real * z.imag + c.imag;
-				z.real = temp;
-				lengthsq = z.real * z.real + z.imag * z.imag;
-				repeats++;
-			}
-
-			pixels[i][j] = 1024 * 1024 * (repeats % 256);
+		while (repeats < 100000 && lengthsq < 4.0) {
+			/* Theorem : If c belongs to M, then |Zn| <= 2. So Zn^2 <= 4 */
+			temp = z.real * z.real - z.imag * z.imag + c.real;
+			z.imag = 2 * z.real * z.imag + c.imag;
+			z.real = temp;
+			lengthsq = z.real * z.real + z.imag * z.imag;
+			repeats++;
 		}
+
+		pixels[i][j] = 1024 * 1024 * (repeats % 256);
 	}
 
 	clock_gettime(CLOCK_MONOTONIC, &finish);
