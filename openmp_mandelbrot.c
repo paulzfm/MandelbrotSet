@@ -87,6 +87,7 @@ int main(void)
 				repeats++;
 			}
 
+			#pragma omp critical
 			pixels[i][j] = 1024 * 1024 * (repeats % 256);
 		}
 	}
