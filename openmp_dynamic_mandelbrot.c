@@ -64,8 +64,8 @@ int main(void)
 	/* draw points */
 	int i, j, k;
 
-	omp_set_num_threads(N);
-	#pragma omp parallel for schedule(dynamic)
+	// omp_set_num_threads(N);
+	#pragma omp parallel for //schedule(dynamic)
 	for (k = 0; k < width * height; k++) {
 			Compl z, c;
 			int repeats;
