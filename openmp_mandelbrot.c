@@ -61,16 +61,15 @@ int main(void)
 	clock_gettime(CLOCK_MONOTONIC, &start);
 
 	/* draw points */
-	Compl z, c;
-	int repeats;
-	double temp, lengthsq;
-	int i;
+	int i, j;
 
-	#pragma omp parallel for
-	for (i = 0; i < width; i++)
-	{
-		int j = 0;
-		for (; j < height; j++) {
+	#pragma omp parallel for private(j)
+	for (i = 0; i < width; i++) {
+		for (j = 0; j < height; j++) {
+			Compl z, c;
+			int repeats;
+			double temp, lengthsq;
+			
 			z.real = 0.0;
 			z.imag = 0.0;
 			c.real = -2.0 + (double)i * (4.0 / (double)width);
@@ -87,7 +86,6 @@ int main(void)
 				repeats++;
 			}
 
-			#pragma omp critical
 			pixels[i][j] = 1024 * 1024 * (repeats % 256);
 		}
 	}
@@ -99,7 +97,6 @@ int main(void)
 	printf("Drawing...\n");
 
 	/* drawing */
-	int j;
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
 			XSetForeground(display, gc, pixels[i][j]);
