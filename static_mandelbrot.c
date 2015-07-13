@@ -42,7 +42,7 @@ void SetPixel(int i, int j)
 	pixels[i][j] = 1024 * 1024 * (repeats % 256);
 }
 
-/* draw pixels of a few column */
+/* draw pixels of a few columns */
 typedef struct argsType
 {
 	int start;
@@ -92,7 +92,6 @@ int main(void)
 	long valuemask = 0;
 
 	GC gc = XCreateGC(display, window, valuemask, &values);
-	//XSetBackground (display, gc, WhitePixel (display, screen));
 	XSetForeground(display, gc, BlackPixel(display, screen));
 	XSetBackground(display, gc, 0X0000FF00);
 	XSetLineAttributes(display, gc, 1, LineSolid, CapRound, JoinRound);
