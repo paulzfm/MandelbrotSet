@@ -30,4 +30,4 @@ sequential | 13.920745 |
 static     | 3.171405  |
 dynamic    | 1.155419  |
 openmp static | 3.192544 |
-openmp_dynamic | 0.917282 |
+openmp dynamic | 0.917282 |
