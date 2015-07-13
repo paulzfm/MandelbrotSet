@@ -15,7 +15,8 @@ Note that this project is ONLY available for Unix-like OS.
 - `./seq` Sequential version.
 - `./static` Static muitl-thread version.
 - `./dynamic` Dynamic muitl-thread version using task queue.
-- `./mp` Openmp version.
+- `./mp_static` Openmp static version.
+- `./mp_dynamic` Openmp dynamic version.
 
 ## Results
 
@@ -28,4 +29,5 @@ Version    | Time (s)  |
 sequential | 13.920745 |
 static     | 3.171405  |
 dynamic    | 1.155419  |
-openmp     | 3.192544  |
+openmp static | 3.192544 |
+openmp_dynamic | 0.917282 |
