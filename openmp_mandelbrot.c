@@ -6,6 +6,7 @@
 /* window size */
 #define width 400
 #define height 400
+#define N 20
 
 /* complex */
 typedef struct complexType
@@ -63,6 +64,8 @@ int main(void)
 	/* draw points */
 	int i, j;
 
+	omp_set_num_threads(N);
+	printf("%d threads will be created.\n", N);
 	#pragma omp parallel for private(j)
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
@@ -89,7 +92,6 @@ int main(void)
 			pixels[i][j] = 1024 * 1024 * (repeats % 256);
 		}
 	}
-	printf("%d threads created.\n", omp_get_num_threads());
 
 	clock_gettime(CLOCK_MONOTONIC, &finish);
 	elapsed = finish.tv_sec - start.tv_sec;
