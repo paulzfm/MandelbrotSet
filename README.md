@@ -6,7 +6,7 @@ Simply type
 
     $ make
 
-and the four programs `seq`, `static`, `dynamic` and `mp` are generated.
+and programs are generated.
 
 Note that this project is ONLY available for Unix-like OS.
 
