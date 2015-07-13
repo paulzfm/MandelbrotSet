@@ -64,12 +64,13 @@ int main(void)
 	Compl z, c;
 	int repeats;
 	double temp, lengthsq;
-	int i, j;
+	int i;
 
-
-	#pragma omp parallel for private(j)
-	for (i = 0; i < width; i++) {
-		for (j = 0; j < height; j++) {
+	#pragma omp parallel for
+	for (i = 0; i < width; i++)
+	{
+		int j = 0;
+		for (; j < height; j++) {
 			z.real = 0.0;
 			z.imag = 0.0;
 			c.real = -2.0 + (double)i * (4.0 / (double)width);
@@ -97,6 +98,7 @@ int main(void)
 	printf("Drawing...\n");
 
 	/* drawing */
+	int j;
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
 			XSetForeground(display, gc, pixels[i][j]);
