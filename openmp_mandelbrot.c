@@ -63,8 +63,6 @@ int main(void)
 	/* draw points */
 	int i, j;
 
-	printf("%d threads will be created.\n", omp_get_num_threads());
-
 	#pragma omp parallel for private(j)
 	for (i = 0; i < width; i++) {
 		for (j = 0; j < height; j++) {
@@ -91,6 +89,7 @@ int main(void)
 			pixels[i][j] = 1024 * 1024 * (repeats % 256);
 		}
 	}
+	printf("%d threads created.\n", omp_get_num_threads());
 
 	clock_gettime(CLOCK_MONOTONIC, &finish);
 	elapsed = finish.tv_sec - start.tv_sec;
