@@ -1,4 +1,4 @@
-all: seq static dynamic
+all: seq static dynamic mp
 
 seq: seq_mandelbrot.c
 	gcc seq_mandelbrot.c -o seq -lX11 -lrt
