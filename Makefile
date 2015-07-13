@@ -13,4 +13,4 @@ mp: openmp_mandelbrot.c
 	gcc openmp_mandelbrot.c -o mp -lX11 -fopenmp -lrt
 
 clean:
-	rm -rf seq static mp
+	rm -rf seq static dynamic mp
